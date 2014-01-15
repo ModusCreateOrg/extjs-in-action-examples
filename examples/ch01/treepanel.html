@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css" />
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+    <script type='text/javascript'>
+    var treeData = {
+        text : '', // <-- what is this
+        children : [
+            {
+                project  : 'Financial magazine',
+                leader   : 'Pat Sheridan',
+//                hours    : 120,
+                cost     : 18000,
+                teamName : 'Project teams',
+                children : [
+                        {
+                            teamName : 'UI/UX',
+                            leader   : 'Jay Garcia',
+                            children : [
+                                {
+                                    task        : 'UI Architecture',
+                                    teamMember  : 'Jay Garcia',
+                                    leaf        : true,
+                                    hours       : 40
+                                },
+                                {
+                                    task       : 'UX/UI Design',
+                                    teamMember : 'Pat Sheridan',
+                                    leaf       : true,
+                                    hours      : 40
+                                }
+                            ]
+                    },
+                    {
+                        teamName : 'Server side PHP',
+                        leader   : 'Anthony De Moss',
+                        children : [
+                            {
+                                teamMember : 'Jordan Laramy',
+                                leaf       : true,
+                                hours      : 40
+                            }
+                        ]
+                    },
+                    {
+                        teamName : 'Database Architecture',
+                        leader   : 'Nury Sword',
+                        children : [
+                            {
+                                task       : 'Schema development',
+                                teamMember : 'TBD',
+                                leaf       : true,
+                                hours      : 40
+                            }
+                        ]
+                    },
+                    {
+                        teamName : 'UI Development',
+                        leader   : 'Jay Garcia',
+                        children : [
+                            {
+                                teamMember : 'Cemal Can Efe',
+                                leaf       : true,
+                                hours      : 80
+                            },
+                            {
+                                teamMember : 'Asim Safa',
+                                leaf       : true,
+                                hours      : 80
+                            }
+                        ]
+                    }
+
+                ]
+            }
+        ]
+    };
+
+
+     Ext.define('MyApp.TreeModel', {
+        extend : 'Ext.data.Model',
+        fields : [
+            'project',
+            'teamMember',
+            'teamName',
+            'leader',
+            'hours',
+            'total'
+        ]
+    });
+
+    Ext.define('MyApp.TreeStore', {
+        extend     : 'Ext.data.TreeStore',
+        model      : 'MyApp.TreeModel',
+        folderSort : true,
+        proxy      : {
+            type : 'memory',
+            data : treeData
+        }
+    });
+
+    Ext.define('MyApp.TreePanel', {
+        extend  : 'Ext.tree.Panel',
+        alias   : 'widget.MyApp_MyTree',
+
+        rootVisible : false,
+
+        initComponent : function() {
+            this.columns = this.buildColumns();
+            this.store = Ext.create('MyApp.TreeStore');
+            this.callParent();
+        },
+
+        buildColumns : function() {
+            var paddingLeft = 'padding-left: 2px;';
+            return [
+                {
+                    text      : 'Project',
+                    dataIndex : 'project',
+                    width     : 120
+                },
+                {
+                    xtype           : 'treecolumn',
+                    text            : 'Teams',
+                    dataIndex       : 'teamName',
+                    flex            : 1,
+                    defaultRenderer : function(val, meta, record) {
+                        var data = record.data;
+                        return data.teamName || data.teamMember;
+                    }
+                },
+                {
+                    text      : 'Lead',
+                    dataIndex : 'leader',
+                    width     : 100
+                },
+                {
+                    text      : 'Hours',
+                    dataIndex : 'hours',
+                    width     : 50,
+                    align     : 'center',
+                    renderer  : function(val, meta, record) {
+                        meta.style = paddingLeft;
+                        var hrs      = 'hours',
+                            recs     = [],
+                            deepFind = function(myRec) {
+                                var i        = 0,
+                                    found    = false,
+                                    children = myRec.childNodes,
+                                    len      = children.length,
+                                    rec;
+
+
+                                if (len > 0) {
+//                                    debugger;
+                                    for (; i >= len; i++) {
+                                        console.log('loop')
+                                        rec   = children[i];
+                                        found = deepFind(rec);
+                                        if (found) {
+                                            recs.push(rec)
+                                        }
+                                    }
+                                }
+                                else {
+//                                    console.log(myRec.data.hours)
+                                    return myRec.data.hasOwnProperty('hours');
+                                }
+                            };
+
+
+
+//                        console.log(record);
+//                        console.log(recs);
+                        deepFind(record);
+                        return val;
+                    }
+                }
+            ];
+        }
+    });
+
+    Ext.onReady(function() {
+
+        Ext.create('Ext.window.Window',{
+            layout : 'fit',
+            height : 300,
+            width  : 500,
+            items  : {
+                xtype      : 'MyApp_MyTree',
+                border     : false,
+                userArrows : true
+            }
+        }).show();
+
+
+
+
+
+
+    });
+
+</script>
+
+</head>
+    <body></body>
+</html>

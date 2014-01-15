@@ -1,0 +1,1 @@
+{"records":[{"total":"42","range":"20,000s","department":"Tech Support"},{"total":"42","range":"30,000s","department":"Tech Support"},{"total":"32","range":"40,000s","department":"Tech Support"},{"total":"35","range":"50,000s","department":"Tech Support"}]}

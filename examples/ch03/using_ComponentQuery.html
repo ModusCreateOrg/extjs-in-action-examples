@@ -1,0 +1,141 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 03 | Using ComponentQuery</title>
+<link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css" />
+<script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+
+
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.require('Ext.window.Window');
+Ext.onReady(function() {
+	// I'm using textmate while sitting on an airplane headed to SF CA to build this example.
+	// If this file contains hard tabs, my sincere apologies. 
+	
+	var buildNestedPanel = function(itemId) {
+		var unique = Math.floor(Math.random() * 1000);
+		return {
+			title  : 'itemId : ' + itemId,
+			level  : 3,
+			layout : 'fit',
+			flex   : 1,
+			frame  : true,
+			itemId : itemId,
+			items  : {
+				html       : 'itemId: ' + itemId + '_gc1,<br />grandchild: true,<br />unique: ' +unique,
+				itemId     : itemId + '_gc1',
+				unique     : unique,
+				bodyStyle  : 'padding: 10px; background-color: #E9F9F9	;',
+				grandchild : true
+			}  
+		}
+	};
+	
+	var genChildPanels = function(itemId) {
+		return {
+			title  : 'itemId: ' + itemId,
+			itemId : itemId,
+			flex   : 1,
+			level  : 2,
+			frame  : true,
+			layout : {
+				type  : 'hbox',
+				align : "stretch"
+			},
+			items  :  [
+				buildNestedPanel(itemId + '_c1'),
+				buildNestedPanel(itemId + '_c2'),
+				buildNestedPanel(itemId + '_c3'),
+			]
+		};
+	};
+	
+	var submitHandler = function() {
+		var ownrPnl = this.up('panel')[0], 
+			tf      = this.ownerCt.query('#queryEditor')[0],
+			query   = tf.getRawValue(),
+			items;
+			
+		if (query.length < 1) {
+			Ext.MessageBox.alert(
+				'Error!', 
+				'The query editor cannot be left blank!',
+			 	function() {
+					tf.el.frame('#F00');
+					tf.focus();
+				}
+			);
+			return;
+		}	
+		else {
+			items = Ext.ComponentQuery.query(query);
+		}	
+			
+		if (items.length < 1) {
+			if (console.warn) {
+				console.warn('No items found using:', query);
+			}
+		}
+		else {
+			if (console.info) {
+				console.info('found ' + query.length + ' items using query: ', query);
+			}
+			Ext.each(items, function(item) {
+				if (console.log) {
+					console.log(item);
+				}
+				item.rendered &&  item.el.fadeOut().fadeIn();
+				
+			});
+		}
+	};
+	
+	var bottomToolbar = {
+		xtype : 'toolbar',
+		dock  : 'bottom',
+		items : [
+			'Ext.ComponentQuery.query(\'',
+			{
+				xtype  : 'textfield',
+				itemId : 'queryEditor',
+				flex   : 1
+			},
+			'\');',
+			'->',
+			{
+				text    : 'Submit query',
+				handler : submitHandler
+			}
+		]
+		
+	};
+	Ext.create('Ext.container.Viewport', {
+		layout : "fit",
+		items  : {
+			itemId : 'master_panel',
+			layout : {
+				type  : 'vbox',
+				align : 'stretch'
+			},
+			items       : [
+				genChildPanels('p1'),
+				genChildPanels('p2'),
+				genChildPanels('p3')
+			],
+			dockedItems : [
+				bottomToolbar 
+			]
+		}
+	});
+  
+    
+
+});
+
+</script>
+
+</body>
+</html>

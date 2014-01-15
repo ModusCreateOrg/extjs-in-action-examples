@@ -1,0 +1,124 @@
+<html>
+<head>
+    <title>Ext JS in Action Chapter 08</title>
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+    <script type="text/javascript" src="datastores.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    var grid;
+    Ext.onReady(function() {
+        var columns = [
+            {
+                xtype     : 'templatecolumn',
+                header    : 'ID',
+                dataIndex : 'id',
+                sortable  : true,
+                width     : 50,
+                resizable : false,
+                hidden    : true,
+                tpl       : '<span style="color: #0000FF;">{id}</span>'
+            },
+            {
+                header    : 'Last Name',
+                dataIndex : 'lastName',
+                sortable  : true,
+                hideable  : false,
+                width     : 75
+            },
+            {
+                header    : 'First Name',
+                dataIndex : 'firstName',
+                sortable  : true,
+                hideable  : false,
+                width     : 75
+            },
+            {
+                header    : 'Address',
+                dataIndex : 'street',
+                sortable  : false,
+                flex      : 1,
+                tpl       : '{street}<br />{city} {state}, {zip}'
+            }
+        ];
+
+        var doMsgBoxAlert = function() {
+
+            var record = grid.getSelectionModel().getSelection()[0];
+            var firstName = record.get('firstName');
+            var lastName = record.get('lastName');
+            var msg = Ext.String.format('The record you chose:<br /> {0}, {1}',
+                    lastName, firstName);
+
+            Ext.MessageBox.alert('', msg);
+        };
+
+        var doRowDblClick = function() {
+            doMsgBoxAlert();
+        };
+
+        var doRowCtxMenu = function(view, record, item, index, e) {
+            e.stopEvent();
+            if (!view.rowCtxMenu) {
+                view.rowCtxMenu = Ext.create('Ext.menu.Menu', {
+                    items : [
+                        {
+                            text    : 'Show Record',
+                            handler : doMsgBoxAlert
+                        }
+                    ]
+                });
+            }
+            view.rowCtxMenu.showAt(e.getXY());
+        };
+
+
+        var pagingToolbar = {
+            xtype       : 'pagingtoolbar',
+            store       : employeeStore,
+            dock        : 'bottom',
+            displayInfo : true
+        };
+
+
+        var grid = Ext.create('Ext.grid.Panel', {
+            columns      : columns,
+            store        : employeeStore,
+            loadMask     : true,
+            selType      : 'rowmodel',
+            singleSelect : true,
+            stripeRows   : true,
+            viewConfig   : {
+                forceFit : true
+            },
+            dockedItems : [
+                pagingToolbar
+            ],
+            listeners    : {
+                itemcontextmenu : doRowCtxMenu,
+                itemdblclick    : doMsgBoxAlert,
+                destroy         : function(view) {
+                    if (view.rowCtxMenu) {
+                        view.rowCtxMenu.destroy();
+                    }
+                }
+            }
+        });
+
+        employeeStore.load();
+
+
+        Ext.create('Ext.window.Window', {
+            height : 350,
+            width  : 550,
+            border : false,
+            items  : grid,
+            center : true,
+            layout : 'fit'
+        }).show();
+    });
+</script>
+</body>
+</html>

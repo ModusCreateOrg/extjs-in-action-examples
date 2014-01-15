@@ -1,0 +1,88 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 03 | Adding and removing items from a container</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.BLANK_IMAGE_URL = '/extjs/resources/images/default/s.gif';
+
+Ext.onReady(function() {
+    /**
+     * This example demonstrates how to add and remove items.
+     */
+    var panel1 = {                                          //1
+        html   : 'I am Panel1',
+        id     : 'panel1',
+        frame  : true,
+        height : 100
+    };
+
+    var panel2 = {
+        html  : '<b>I am Panel2</b>',
+        id     : 'panel2',
+        frame : true
+    };
+
+    var myWin = new Ext.Window({                            //2
+        id     : 'myWin',
+        height : 250,
+        width  : 400,
+        items  : [
+            panel1,
+            panel2
+        ]
+    });
+
+    myWin.show();
+
+    //This is just to show the firebug code in the page and is not in the book.
+    var pnl = new Ext.Panel({
+        renderTo  : Ext.getBody(),
+        contentEl : 'code',
+        hidden    : true,
+        title     : 'The following code is designed to be inserted into the Firebug console.',
+        width     : 450,
+        height    : 300,
+        frame     : true,
+        layout     : 'fit'
+
+    });
+
+    Ext.fly(pnl.body.dom.childNodes[0]).fadeIn();
+
+    pnl.show();
+    pnl.el.fadeIn({
+        duration : 1.5
+    });
+});
+
+</script>
+<pre style="display:none;" id="code">
+    <code>
+Ext.getCmp('myWin').add({
+    title : 'Appended Panel',
+    id    : 'addedPanel',
+    html  : 'Hello there!'
+});
+
+Ext.getCmp('myWin').doLayout();
+
+Ext.getCmp('myWin').insert(1, {
+    title : 'Inserted Panel',
+    id    : 'insertedPanel',
+    html  : 'It is cool here!'
+});
+
+Ext.getCmp('myWin').doLayout();
+
+var panel = Ext.getCmp('addedPanel');
+Ext.getCmp('myWin').remove(panel);
+    </code>
+</pre>
+</body>
+</html>

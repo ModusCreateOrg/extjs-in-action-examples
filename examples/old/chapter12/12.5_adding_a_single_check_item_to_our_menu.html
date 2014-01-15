@@ -1,0 +1,161 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 10</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+    <script type="text/javascript" src="TDGi.iconMgr/TDGi.iconMgr.js"></script>
+    <link rel="stylesheet" type="text/css" href="icons.css" />
+</head>
+<body style="padding: 20px;">
+
+<script type="text/javascript">
+Ext.onReady(function() {
+Ext.QuickTips.init();
+
+    var genericHandler = function(menuItem) {
+        Ext.MessageBox.alert('', 'Your choice is ' + menuItem.text);
+    }
+var colorAndDateHandler = function(menuItem, choice) {
+    Ext.MessageBox.alert('', 'Your choice is ' + choice);
+}
+
+    var genericMenuItem = {
+        text    : 'Generic Item',
+        iconCls : 'icon-tag_blue',
+        handler : genericHandler
+    }
+
+
+
+    var textItem = {
+        xtype : 'menutextitem',
+        text  : 'Choose One',
+        style : {
+            'border'           : '1px solid #999999',
+            'background-color' : '#D6E3F2',
+            'margin'           : "0px 0px 1px 0px",
+            'display'          : 'block',
+            'padding'          : '3px',
+            'font-weight'      : 'bold',
+            'font-size'        : '12px',
+            'text-align'       : 'center'
+
+        }
+    }
+
+    var genericWithSubMenu = {
+        text    : 'New Department',
+        iconCls : 'icon-group_add',
+        menu    : [
+            textItem,
+            {
+                text    : 'Management',
+                iconCls : 'icon-user_suit_black',
+                handler : genericHandler
+            },
+            {
+                text    : 'Accounting',
+                iconCls : 'icon-user_green',
+                handler : genericHandler
+            },
+            {
+                text    : 'Sales',
+                iconCls : 'icon-user_brown',
+                handler : genericHandler
+            }
+        ]
+    }
+
+
+    var setSeverity = function(menuItem, checked) {
+        if (checked) {
+            var iconCls = 'icon-flag_' + menuItem.color;
+            Ext.getCmp('colorMenu').setIconClass(iconCls);
+        }
+    }
+
+    var colorMenuItem = {
+        text    : 'Choose Color',
+        iconCls : 'icon-color_swatch',
+        menu    : {
+            xtype   : 'colormenu',
+            handler : colorAndDateHandler
+        }
+    };
+
+    var dateMenuItem = {
+        text    : 'Choose Date',
+        iconCls : 'icon-calendar',
+        menu    : {
+            xtype  : 'datemenu',
+            handler : colorAndDateHandler
+        }
+    };
+
+    var colorCheckMenu = {
+        text    : 'Set Severity',
+        id      : 'colorMenu',
+        iconCls : 'icon-help',
+        menu    : {
+            defaults : {
+                checked      : false,
+                group        : 'colorChkGroup',
+                checkHandler : setSeverity
+            },
+            items : [
+                {
+                    text         : 'Fatal',
+                    color        : 'black'
+                },
+                {
+                    text         : 'Critical',
+                    color        : 'red'
+                },
+                {
+                    text         : 'Nominal',
+                    color        : 'green'
+                },
+                {
+                    text         : 'Unknown',
+                    color        : 'yellow'
+                }
+            ]
+
+        }
+    }
+
+    var singleCheckItem = {
+        text         : 'Check me',
+        checked      : false,
+        checkHandler : colorAndDateHandler
+    }
+
+
+     var menuItems = [
+        genericMenuItem,
+        '-',
+        genericWithSubMenu,
+        colorMenuItem,
+        dateMenuItem,
+        '-',
+        singleCheckItem 
+        //colorCheckMenu
+    ];
+    var menu = new Ext.menu.Menu({
+        id        : 'myMenu',
+        items     : menuItems,
+        listeners : {
+            'beforehide' : function() {
+                return false;
+            }
+        }
+
+    });
+    menu.showAt([100,100]);
+
+});
+</script>
+</body>
+</html>

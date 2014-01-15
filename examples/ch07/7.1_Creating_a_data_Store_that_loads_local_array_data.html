@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>Ext JS in Action Chapter 7: Creating a data store that load local array data </title>
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    var store;
+    Ext.onReady(function() {
+        var arrayData = [
+            ['Jay Garcia', 'MD'],
+            ['Aaron Baker', 'VA'],
+            ['Susan Smith', 'DC'],
+            ['Mary Stein', 'DE'],
+            ['Bryan Shanley', 'NJ'],
+            ['Nyri Selgado', 'CA']
+        ];
+
+        Ext.define('User', {
+            extend : 'Ext.data.Model',
+            fields : [
+                {
+                    name    : 'name',
+                    mapping : 1
+                },
+                {
+                    name    : 'state',
+                    mapping : 2
+                }
+            ]
+        });
+
+        store = Ext.create("Ext.data.Store", {
+            model : 'User',
+            proxy : {
+                type   : 'memory',
+                reader : {
+                    model : 'User',
+                    type  : 'array'
+                }
+            }
+        });
+        store.loadData(arrayData);
+        console.log(store.first());
+
+
+    });
+</script>
+</body>
+</html>

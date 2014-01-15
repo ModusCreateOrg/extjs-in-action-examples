@@ -1,0 +1,48 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Ext JS in Action Chapter 11</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.onReady(function() {
+Ext.QuickTips.init();
+    
+var leftTree = new Ext.tree.TreePanel({
+    xtype      : 'treepanel',
+    autoScroll : true,
+    title      : 'My Company',    
+    animate    : false,
+    enableDD   : true,
+    loader     : new Ext.tree.TreeLoader({
+        url :  'companyA.php'
+    }),
+    root       : {
+        text     : 'Company A',
+        id       : 'companyA',
+        expanded : true
+    }
+});
+
+
+
+new Ext.Window({
+    height     : 400,
+    width      : 400,
+    layout     : 'fit',
+    border     : false,
+    title      : 'Our first remote tree',
+    items      : leftTree
+}).show();
+
+
+
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 11</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.onReady(function() {
+Ext.QuickTips.init();
+
+var dragConfig = {
+    //@override
+    onBeforeDrag : function(dragData, eventObj) {
+        //Only allow
+        return dragData.node.attributes.leaf;
+    }
+};
+
+var dropConfig = {
+    isValidDropPoint :  function(nodeData, pt, dd, eventObj, data) {
+
+        var treeDropZone = Ext.tree.TreeDropZone;
+        var isVldDrpPnt = treeDropZone.prototype.isValidDropPoint;
+
+        var dropNode = data.node;
+        var dropNodePrntDept = dropNode.parentNode.attributes.text;
+        var dropNodeOwnerTreeId = dropNode.getOwnerTree().id;
+
+        var validDropPoints = dropNode.attributes.validDropPoints || [];
+
+        var targetNode           = nodeData.node;
+        var targetNodePrnt        = targetNode.parentNode;
+        var targetNodeOwnerTree   = targetNode.getOwnerTree();
+        var targetNodeOwnerTreeId = targetNode.getOwnerTree().id;
+
+        var isSameTree = dropNodeOwnerTreeId === targetNodeOwnerTreeId;
+
+        // root node or same tree
+        if (!targetNodePrnt || isSameTree) {
+            return false;
+        }
+
+        var targetNodePrntDept = targetNodePrnt.attributes.text;
+        var targetNodeTxt       = targetNode.attributes.text;
+
+        //If within the same parent type, call the prototype isValidDropPoint
+        if (dropNodePrntDept === targetNodePrntDept) {
+            return isVldDrpPnt.apply(targetNodeOwnerTree.dropZone, arguments);
+        }
+        // Else if a validDropPoints is provided for the node,
+        // Iterate through them and verify if the validDropPoints,
+        // checking for a match
+        else if (Ext.isArray(validDropPoints)) {
+            var isVldDept = false;
+            
+            var dropPoint = targetNodeOwnerTree.dropZone.getDropPoint(eventObj, nodeData, dd);
+
+            //dpName == Drop Point Name
+            Ext.each(validDropPoints, function(dpName) {
+                if (targetNodeTxt == dpName) {
+                    isVldDept = dpName;
+                }
+            });            
+
+            //If the node is a branch and the point == 'append'
+            if (isVldDept && dropPoint === 'append') {
+                return isVldDrpPnt.apply(targetNodeOwnerTree.dropZone, arguments);
+            }
+           
+        }
+
+        return false;
+    }
+};
+
+
+    var leftTree = {
+        xtype      : 'treepanel',
+        autoScroll : true,
+        title      : 'Their Company',
+        animate    : false,
+        enableDD   : true,
+        ddGroup    : 'myTreeDDGroup',
+        dragConfig : dragConfig,
+        dropConfig : dropConfig,
+        loader     : new Ext.tree.TreeLoader({
+            url :  'theirCompany.php'
+        }),
+        root       : {
+            text     : 'Their Company',
+            id       : 'theirCompany',
+            expanded : true
+        }
+    };
+
+
+
+    var rightTree = {
+        xtype      : 'treepanel',
+        title      : 'Our Company',
+        autoScroll : true,
+        animate    : false,
+        enableDD   : true,
+        dragConfig : dragConfig,
+        dropConfig : dropConfig,
+        loader     : new Ext.tree.TreeLoader({
+            url :  'ourCompany.php'
+        }),
+        root       : {
+            text     : 'Our Company',
+            id       : 'ourCompany',
+            expanded : true
+        }
+    };
+
+
+    new Ext.Window({
+        height     : 350,
+        width      : 450,
+        layout     : 'hbox',
+        border     : false,
+        layoutConfig : {
+            align : 'stretch'
+        },
+        defaults   : {
+            flex : 1
+        },
+        items      : [leftTree,rightTree]
+    }).show();
+
+});
+</script>
+</body>
+</html>

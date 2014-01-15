@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 02 | Ext.Element examples</title>
+<link rel="stylesheet" type="text/css" href="/ext2/resources/css/ext-all.css" />
+<script type="text/javascript" src="/ext2/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/ext2/ext-all-debug.js"></script>
+</head> 
+<body> 
+<style type="text/css">
+.myDiv {
+	border  : 1px solid #AAAAAA; 
+	width   : 200; 
+	cursor  : pointer;
+	padding : 2px 2px 2px 2px;
+	margin  : 2px 2px 2px 2px;	
+}	
+</style>
+
+<script type="text/javascript">
+    /**
+     * The following examples were pruned from the book per reader feedback.   They demonstrate how to add click
+     * handlers to elements to trigger the manipulation of the element that was clicked.
+     */
+    Ext.BLANK_IMAGE_URL = '/ext2/resources/css/images/s.gif';
+    Ext.onReady(function() {
+        /**
+         * When clicked, this element (div1) will have the highlight effect applied.
+         */
+        var div1 = Ext.get('div1');
+        div1.on('click', function() {
+            this.highlight();
+        });
+
+        /**
+         * When clicked, this element will align itself to the top-right of div 1.
+         */
+        var div2 = Ext.get('div2');
+        div2.on('click', function() {
+            this.alignTo('div1', "tr");
+        });
+
+        /**
+         * When div3 is clicked, it will grow by 20 pixels in height and width.
+         */
+        Ext.get('div3').on('click', function() {
+
+            var newWidth  = this.getWidth() + 20;
+            var newHeight = this.getHeight() + 20;
+            this.setSize(newWidth, newHeight, true);
+
+        });
+
+        /**
+         * When clicked, div4 will slide to the right 50 pixels and down 10 pixels.  It will also update
+         * its inner HTML with the resulting positional text.
+         */
+        Ext.get('div4').on('click', function() {
+            var newX = this.getX() + 50;
+            var newY = this.getY() + 10;
+
+            this.moveTo(newX, newY, {
+                callback : function() {
+                    var msgX = Math.ceil(this.getX());
+                    var msgY= Math.ceil(this.getY());
+                    var msg = 'X = ' + msgX + ' Y = ' + msgY;
+                    this.update(msg);
+                }
+            });
+        });
+
+        /**
+         * When div 5 is clicked, it will add child nodes to itself, one at a time.  When the number of child nodes
+         * exceeds two, it will apply a mask and  
+         */
+        Ext.get('div5').on('click', function() {
+            var myChildDivs = this.select('div');
+            var numChildren = myChildDivs.elements.length;
+
+            if (numChildren > 2) {
+                this.mask('No more children please!');
+            }
+            else {
+                this.createChild({
+                    tag  : 'div',
+                    html : 'Child ' + (numChildren + 1)
+                });
+            }
+
+        });
+
+
+        /**
+         * When div6 is clicked, it will remove the child elements one at a time.  If the number of child
+         * elements is less than one, it will mask this element and prevent any further child element removals.
+         */
+        Ext.get('div6').on('click', function() {
+            var myChildDivs = this.select('div');
+            var numChildren = myChildDivs.elements.length;
+            var lastChild   = Ext.get('div6').child('div:last-child');
+
+            if (numChildren > 1) {
+                lastChild.remove();
+            }
+            else {
+                lastChild.update('Please keep me!');
+            }
+        });
+
+        /**
+         * When clicked, div7 will fade out and fade in.
+         */
+        Ext.get('div7').on('click', function() {
+            this.fadeOut({
+                scope    : this,
+                callback : function() {
+                    this.fadeIn.defer(500, this);
+                }
+            });
+        });
+
+
+        /**
+         * This example will demonstrate how to apply an effect to an instance of Ext.Panel with the click of
+         * an Ext.Button
+         */
+        var myButton = new Ext.Button({
+            text    : 'hide me',
+            handler : function() {
+                myPanel.el.switchOff({
+                    callback : function() {
+                        myPanel.el.slideIn.defer(500, myPanel.el);
+                    }
+                });
+            }
+        });
+
+        var myPanel = new Ext.Panel({
+            width    : 200,
+            height   : 100,
+            title    : 'Effects are cool!',
+            frame    : true,
+            renderTo : Ext.getBody(),
+            items    :  myButton
+        });
+
+
+    });
+    </script>
+
+
+    <div id='div1' class="myDiv">&nbsp;</div>
+    <div id='div2' class="myDiv">Click to align to right of div1</div>
+    <div id='div3' class="myDiv">Click to resize</div>
+    <div id='div4' class="myDiv">Click to move</div>
+
+    <div id='div5' class="myDiv">
+        <div>
+            div5 has 1 child node, me.
+        </div>
+    </div>
+    <div id='div6' class="myDiv">
+        <div>
+            Child 1
+        </div>
+        <div>
+            Child 2
+        </div>
+        <div>
+            Child 3
+        </div>
+    </div>
+
+    <div id='div7' class="myDiv">
+        Click to fade me out
+    </div>
+
+
+</body>
+</html>

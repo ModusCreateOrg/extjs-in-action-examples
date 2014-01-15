@@ -1,0 +1,53 @@
+<html>
+<head>
+    <title>Ext JS in Action Chapter 7: Reading XML data </title>
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    var departmentStore;
+    Ext.onReady(function() {
+        var departmentStore = Ext.create("Ext.data.Store", {
+            fields : [
+                'name',
+                'active',
+                'dateActive',
+                'dateInactive',
+                'description',
+                'director',
+                'numEmployees',
+                {
+                    name    : 'id',
+                    mapping : 'id'
+                }
+
+            ],
+            proxy  : {
+                type   : 'ajax',
+                url    : 'data.xml',
+                reader : {
+                    type            : 'xml',
+                    record          : 'node',
+                    idPath          : 'id',
+                    successProperty : 'meta/success'
+                }
+            }
+        });
+        departmentStore.load({
+            callback : function(records, operation, successful) {
+                console.log(operation)
+                if (successful) {
+                    console.log("department:%o", records[0]);
+                }
+                else {
+                    console.log("the server reported an error");
+                }
+
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 05 | Listing 5.1 Implementing the container layout</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+Ext.BLANK_IMAGE_URL = '/extjs/resources/images/default/s.gif';
+
+Ext.onReady(function() {
+
+
+    var childPnl1 = {
+       frame  : true,
+       height : 50,
+       html   : 'My First Child Panel',
+       title  : 'First children are fun'
+    };
+
+
+    var childPnl2 = {
+       xtype  : 'panel',
+       width  : 150,
+       html   : 'Second child',
+       title  : 'Second children have all the fun!'
+    };
+
+    var myWin = new Ext.Window({
+       height     : 300,
+       width      : 300,
+       title      : 'A window with a container layout',
+       autoScroll : true,
+       items      : [
+          childPnl1,
+          childPnl2
+       ],
+       tbar : [
+          {
+             text    : 'Add child',
+             handler : function() {
+                var numItems = myWin.items.getCount() + 1;
+                myWin.add({
+                   title       : 'Child number ' + numItems,
+                   height      : 60,
+                   frame       : true,
+                   collapsible : true,
+                   collapsed   : true,
+                   html        : 'Yay, another child!'
+                });
+                myWin.doLayout();
+             }
+          }
+       ]
+    });
+
+    myWin.show();
+
+});
+
+</script> 
+</body>
+</html>

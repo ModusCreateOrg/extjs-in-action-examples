@@ -1,0 +1,116 @@
+vc<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 06  | Listing 6.4 Implementing a remote combobox using custom templates</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head> 
+<body> 
+<style type="text/css">
+
+
+
+    .combo-result-item {
+        padding: 2px;
+        border:  1px solid #FFFFFF;
+    }
+
+    .combo-result-item-over {
+        border : 1px solid;
+    }
+    .combo-name {
+        font-weight:      bold;
+        font-size:        11px;
+        background-color: #FFFF99;
+    }
+    .combo-full-address {
+        font-size: 11px;
+        color:     #555555;
+    }
+
+</style>
+
+<script type="text/javascript">
+Ext.onReady(function() {
+    Ext.QuickTips.init();
+    var remoteJsonStore = new Ext.data.JsonStore({
+        url           : '/tdgi_wp_postQuery.php',
+        root          : 'records',
+        totalProperty : 'totalCount',
+        baseParams    : {
+            column : 'fullName'
+        },
+        fields     : [
+            {
+                name    : 'name',
+                mapping : 'fullName'
+            },
+            {
+                name    : 'id',
+                mapping : 'id'
+            },
+            {
+                name    : 'address',
+                mapping : 'address'
+            },
+            {
+                name    : 'city',
+                mapping : 'city'
+            },
+            {
+                name    : 'state',
+                mapping : 'state'
+            },
+            {
+                name    : 'zip',
+                mapping : 'zip'
+            }
+
+        ],
+        proxy : new Ext.data.ScriptTagProxy({
+            url : 'http://extjsinaction.com/dataQuery.php'
+        })
+    });
+
+    var tpl = new Ext.XTemplate(
+        '<tpl for="."><div class="combo-result-item">',
+            '<div class="combo-name">{name}</div>',
+            '<div class="combo-full-address">{address}<br />{city} {state} {zip}</div>',
+        '</div></tpl>'
+    );
+
+
+    var combo = {
+        xtype          : 'combo',
+        fieldLabel     : 'Search by name',
+        forceSelection : true,
+        displayField   : 'name',
+        valueField     : 'id',
+        loadingText	   : 'Querying....',
+        pageSize	   : 20,
+        anchor         : '100%',
+        minChars	   : 1,
+        triggerAction  : 'all',
+        tpl		       : tpl,
+        itemSelector   : 'div.combo-result-item',
+        store		   : remoteJsonStore
+    };
+
+    new Ext.Window({
+        title      : '',
+        height     : 100,
+        layout     : 'form',
+        labelWidth : 100,
+        width      : 350,
+        bodyStyle  : 'padding: 5px',
+        items      : combo
+    }).show();
+
+});
+
+
+
+</script> 
+</body>
+</html>

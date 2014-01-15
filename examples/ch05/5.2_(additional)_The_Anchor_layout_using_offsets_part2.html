@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 05 |The Anchor layout using offsets (part2)</title>
+<link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css" />
+<script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+
+Ext.onReady(function() {
+
+    /**
+     * Add the following listeners object to the child panel to see the size of the child panels after resize.
+     */
+    var listeners =  {
+        resize : function(p) {
+            var height = p.el.getHeight();
+            var width = p.el.getWidth();
+            p.body.update(height + ' x ' +width);
+
+            var parentHeight = p.ownerCt.body.getHeight();
+            var parentWidth = p.ownerCt.body.getWidth();
+            var heightDiff = parentHeight - height;
+            var widthDiff  = parentWidth - width;
+            var htmlFrag = String.format(
+                    'CH{0} x CW{1} <br /> PH{2} x PW{3} <br /> diffH{4} x diffW{5}',
+                    height,
+                    width,
+                    parentHeight,
+                    parentWidth,
+                    heightDiff,
+                    widthDiff
+            );
+            p.body.update(htmlFrag);
+
+        }
+    };
+
+    var myWin = Ext.create("Ext.Window", {
+        height     : 300,
+        width      : 300,
+        layout     : 'anchor',
+        autoScroll : true,
+        id         : 'myWin',
+        border     : false,
+        anchorSize : '400',
+        items      : [
+            {
+                title     : 'Panel1',
+                anchor    : '-50, -150',
+                frame     : true
+            },
+            {
+                title     : 'Panel2',
+                height    : 150,
+                anchor    : '-10',
+                frame     : true
+            }
+        ]
+    });
+
+    myWin.show();
+
+});
+
+</script> 
+</body>
+</html>

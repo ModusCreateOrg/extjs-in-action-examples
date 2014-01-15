@@ -1,0 +1,66 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 09</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.onReady(function() {
+Ext.QuickTips.init();
+
+
+var rootNode = {
+    text     : 'Root Node',
+    expanded : true,
+    children : [
+        {
+            text : 'Child 1',
+            leaf : true
+        },
+        {
+            text : 'Child 2',
+            leaf : true
+        },
+        {
+            text     : 'Child 3',
+            children : [
+                {
+                    text     : 'Grand Child 1',
+                    children : [
+                        {
+                            text : 'Grand... you get the point',
+                            leaf : true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+var tree = {
+    xtype      : 'treepanel',
+    id         : 'treepanel',
+    autoScroll : true,
+    animate    : false,
+   // rootVisible   : false,
+    root       : rootNode
+}
+
+new Ext.Window({
+    height     : 200,
+    width      : 250,
+    layout     : 'fit',
+    border     : false,
+    title      : 'Our first tree',
+    items      : tree
+}).show();
+
+});
+</script>
+</body>
+</html>

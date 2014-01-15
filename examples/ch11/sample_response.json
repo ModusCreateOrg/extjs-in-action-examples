@@ -1,0 +1,21 @@
+{"type":"rpc", "tid":1, "action":"Actors", "method":"read", "result":{
+    "success":true,
+    "data":[
+        {
+            "id":4587,
+            "name":"John Travolta"
+        },
+        {
+            "id":12106,
+            "name":"Benny Hill"
+        },
+        {
+            "id":21238,
+            "name":"Bruce Willis"
+        },
+        {
+            "id":9095,
+            "name":"Rowan Atkinson"
+        }
+    ]
+}}

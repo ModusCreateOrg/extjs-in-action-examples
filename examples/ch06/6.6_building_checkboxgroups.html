@@ -1,0 +1,55 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Ext JS in Action Chapter 06 | Listing 6.6 building checkbox groups</title>
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    Ext.onReady(function() {
+        Ext.QuickTips.init();
+
+        var checkboxes = {
+            xtype      : 'checkboxgroup',
+            fieldLabel : "Which do you own",
+            anchor     : '100%',
+            items      : [
+                {
+                    boxLabel   : 'Cat',
+                    inputValue : 'cat'
+                },
+                {
+                    boxLabel   : 'Dog',
+                    inputValue : 'dog'
+                },
+                {
+                    boxLabel   : 'Fish',
+                    inputValue : 'fish'
+                },
+                {
+                    boxLabel   : 'Bird',
+                    inputValue : 'bird'
+                }
+            ]
+        };
+
+        new Ext.Window({
+            title      : '',
+            layout     : 'fit',
+            defaults   : {
+              labelWidth : 110,
+            },
+            height     : 90,
+            width      : 320,
+            bodyStyle  : 'padding: 5px',
+            items      : checkboxes
+        }).show();
+
+    });
+
+
+</script>
+</body>
+</html>

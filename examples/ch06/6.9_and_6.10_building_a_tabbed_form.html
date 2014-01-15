@@ -1,0 +1,90 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Ext JS in Action Chapter 06</title>
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    Ext.onReady(function() {
+        Ext.QuickTips.init();
+
+        var tabs = [
+            {
+                xtype     : 'fieldcontainer',
+                title     :'Phone Numbers',
+                style     : 'padding:5px 5px 0',
+                defaults  : {
+                    xtype : 'textfield',
+                    width : 230
+                },
+                items   : [
+                    {
+                        fieldLabel : 'Home',
+                        name       : 'home'
+                    },
+                    {
+                        fieldLabel : 'Business',
+                        name       : 'business'
+                    },
+                    {
+                        fieldLabel : 'Mobile',
+                        name       : 'mobile'
+                    },
+                    {
+                        fieldLabel : 'Fax',
+                        name       : 'fax'
+                    }
+                ]
+            },
+            {
+                title  : 'Resume',
+                xtype  : 'htmleditor',
+                name   : 'resume'
+            },
+            {
+                title  : 'Bio',
+                xtype : 'htmleditor',
+                name  : 'bio'
+            }
+        ];
+
+        var tabPanel = {
+            xtype             :'tabpanel',
+            activeTab         : 0,
+            deferredRender    : false,
+            layoutOnTabChange : true,
+            border            : false,
+//            flex              : 1,
+            plain             : true,
+            items             : tabs
+        };
+
+        var fp = Ext.create('Ext.form.Panel', {
+            renderTo     : Ext.getBody(),
+            width        : 700,
+            title        : 'Our complex form',
+            height       : 360,
+            frame        : true,
+            style        : 'margin: 20',
+            layout       : {
+                type : 'vbox',
+                align: 'stretch'
+            },
+
+            defaults     : {
+                msgTarget : 'side',
+                anchor    : '-20'
+            },
+
+            items        : [
+                tabPanel
+            ]
+        });
+    });
+
+</script>
+</body>
+</html>

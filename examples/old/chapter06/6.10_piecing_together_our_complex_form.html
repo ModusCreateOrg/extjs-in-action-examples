@@ -1,0 +1,210 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 06</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+Ext.onReady(function() {
+Ext.QuickTips.init();
+
+    var fieldset1 = {
+        xtype       : 'fieldset',
+        title       : 'Name Information',
+        width       : 300,
+        border      : true,
+        labelWidth  : 50,
+        defaultType : 'textfield',
+        defaults    : {
+            anchor     : '-10',
+            allowBlank : false
+        },
+        items : [
+            {
+                fieldLabel : 'First',
+                name       : 'firstName',
+                allowBlank : false
+            },
+            {
+                fieldLabel : 'Middle',
+                name       : 'middle'
+            },
+            {
+                fieldLabel : 'Last',
+                name       : 'firstName'
+            }
+        ]
+    };
+
+    var fieldset2 = Ext.apply({}, {
+        flex       : 1,
+        labelWidth : 50,
+        title      : 'Address Information',
+        items      : [
+            {
+                fieldLabel : 'Address',
+                name       : 'address'
+            },
+            {
+                fieldLabel : 'Street',
+                name       : 'street'
+            },
+            {
+                xtype       : 'container',
+                autoEl      : {},
+                border      : false,
+                layout      : 'column',
+                anchor      : '100%',
+                defaultType : 'textfield',
+                items       : [
+                    {
+                        xtype  : 'container',
+                        autoEl : {},
+                        layout : 'form',
+                        width  : 170,
+                        items  : [
+                            {
+                                xtype      : 'textfield',
+                                fieldLabel : 'State',
+                                name       : 'state',
+                                anchor     : '-20'
+                            }
+                        ]
+
+                    },
+                    {
+                        xtype       : 'container',
+                        autoEl      : {},
+                        layout      : 'form',
+                        columnWidth : 1,
+                        labelWidth  : 20,
+                        items       : [
+                            {
+                                xtype      : 'textfield',
+                                fieldLabel : 'Zip',
+                                anchor     : '-10',
+                                name       : 'zip'
+
+                            }
+                        ]
+                    }
+
+                ]
+
+            }
+        ]
+
+    }, fieldset1);
+
+    var fieldsetContainer = {
+        xtype  : 'container',
+        autoEl : {},
+        layout : 'hbox',
+        anchor : '100%',
+        height  : 120,
+        layoutConfig : {
+            align : 'stretch'
+        },
+        items  : [
+            fieldset1,
+            fieldset2
+        ]
+    };
+
+
+    var tabs = [
+        {
+            title    :'Phone Numbers',
+            layout   : 'form',
+            bodyStyle:'padding:5px 5px 0',
+            defaults  : {
+                xtype : 'textfield',
+                width : 230
+            },
+            items   : [
+                {
+                    fieldLabel : 'Home',
+                    name       : 'home'
+                },
+                {
+                    fieldLabel : 'Business',
+                    name       : 'business'
+                },
+                {
+                    fieldLabel : 'Mobile',
+                    name       : 'mobile'
+                },
+                {
+                    fieldLabel : 'Fax',
+                    name       : 'fax'
+                }
+            ]
+        },
+        {
+            title  : 'Resume',
+            xtype  : 'container',
+            autoEl : {},
+            layout : 'fit',
+            items  : {
+                xtype : 'htmleditor',
+                name  : 'resume'
+
+            }
+        },
+        {
+            title  : 'Bio',
+            xtype  : 'container',
+            autoEl : {},
+            layout : 'fit',
+            items  : {
+                xtype : 'htmleditor',
+                name  : 'bio'
+            }
+        }
+    ];
+
+    var tabPanel = {
+        xtype             :'tabpanel',
+        activeTab         : 0,
+        deferredRender    : false,
+        layoutOnTabChange : true,
+        border            : false,
+        cls               : 'x-panel-body',
+        flex              : 1,
+        plain             : true,
+        items             : tabs
+    };
+
+
+    var fp = new Ext.form.FormPanel({
+    	renderTo     : Ext.getBody(),
+        width        : 600,
+        title        : 'Our complex form',
+        height       : 350,
+        frame        : true,
+        layout       : 'vbox',
+        layoutConfig : {
+            align : 'stretch'
+        },
+        items        : [
+            fieldsetContainer,
+            tabPanel
+        ]
+    });
+
+
+
+
+
+
+
+
+});
+
+</script> 
+</body>
+</html>

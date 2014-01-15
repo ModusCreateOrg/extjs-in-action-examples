@@ -1,0 +1,63 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>Ext JS in Action Chapter 06 | Listing 6.2 Wrapping a FormPanel around the textfields with validation</title>
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    Ext.onReady(function() {
+        Ext.QuickTips.init();
+        var fpItems = [
+            {
+                fieldLabel : 'Alpha only',
+                allowBlank : false,
+                emptyText  : 'This field is empty!',
+                maskRe     : /[a-z]/i,
+                msgTarget  : 'side'
+            },
+            {
+                fieldLabel    : 'Simple 3 to 7 Chars',
+                allowBlank    : false,
+                msgTarget     : 'under',
+                minLength     : 3,
+                maxLength     : 7
+            },
+            {
+                fieldLabel    : 'Special Chars Only',
+                allowBlank    : false,
+                msgTarget     : 'qtip',
+                stripCharsRe  : /[a-zA-Z0-9]/ig
+            },
+            {
+                fieldLabel    : 'Web Only with VType',
+                allowBlank    : false,
+                vtype         : 'url',
+                msgTarget     : 'side'
+            }
+        ];
+
+        var fp = new Ext.form.Panel({
+            renderTo     : Ext.getBody(),
+            width        : 400,
+            title        : 'Exploring text fields',
+            height       : 240,
+            frame        : true,
+            bodyStyle    : 'padding: 5px',
+            monitorValid : true,
+            monitorPoll  : 50,
+            labelWidth   : 125,
+            defaultType  : 'textfield',
+            defaults     : {
+                msgTarget : 'side',
+                anchor    : '-20'
+            },
+            items        : fpItems
+        });
+    });
+
+</script>
+</body>
+</html>

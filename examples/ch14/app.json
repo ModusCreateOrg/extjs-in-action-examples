@@ -1,0 +1,12 @@
+{
+    "name": "Survey",
+
+    "requires": [
+    ],
+
+    "resources": [
+		"data.json"
+    ],
+
+    "id": "c17ccff8-b8c9-4fb1-80f5-8f818603a5e5"
+}

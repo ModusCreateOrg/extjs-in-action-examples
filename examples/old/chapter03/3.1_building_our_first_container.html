@@ -1,0 +1,46 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Ext JS in Action Chapter 03 | Listing 3.1 Building our first container</title>
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.BLANK_IMAGE_URL = '/extjs/resources/images/default/s.gif';
+
+Ext.onReady(function() {
+    /**
+     * This example demonstrates how Ext JS components can contain and manage other components.
+     */
+    var panel1 = {                                          //1
+        html   : 'I am Panel1',
+        id     : 'panel1',
+        frame  : true,
+        height : 100
+    };
+    var panel2 = {
+        html  : '<b>I am Panel2</b>',
+        id     : 'panel2',
+        frame : true
+    };
+
+    var myWin = new Ext.Window({                            //2
+        id     : 'myWin',
+        height : 400,
+        width  : 400,
+        items  : [
+            panel1,
+            panel2
+        ]
+    });
+
+    myWin.show();
+
+});
+
+</script>
+</body>
+</html>
