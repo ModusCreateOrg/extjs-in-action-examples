@@ -1,2 +1,0 @@
-{success: false, msg : 'This is an example error message', errors : {firstName : 'Cannot contain "!" characters.',lastName  : 'Must not be blank.'}}
-

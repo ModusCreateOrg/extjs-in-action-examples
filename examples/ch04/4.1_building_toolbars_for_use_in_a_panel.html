@@ -1,0 +1,67 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css" />
+<script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+
+
+Ext.require(['Ext.button.Button', 'Ext.panel.Panel', 'Ext.toolbar.Toolbar']);
+
+Ext.onReady(function() {
+    var myBtnHandler = function(btn) {                         // 1
+            Ext.MessageBox.alert('You Clicked', btn.text);
+        },
+        fileBtn =  Ext.create('Ext.button.Button', {          // 2
+            text    : 'File',
+            handler : myBtnHandler
+        }),
+        editBtn = Ext.create('Ext.button.Button', {           // 3
+            text    : 'Edit',
+            handler : myBtnHandler
+        }),
+        tbFill = new Ext.toolbar.Fill();                      // 4
+
+    var myTopToolbar = Ext.create('Ext.toolbar.Toolbar', {    // 5
+        items : [
+            fileBtn,
+            tbFill,
+            editBtn
+        ]
+    });
+
+    var myBottomToolbar = [                          // 6
+        {
+            text    : 'Save',
+            handler : myBtnHandler
+        },
+        '-',
+        {
+            text    : 'Cancel',
+            handler : myBtnHandler
+        },
+        '->',
+        '<b>Items open: 1</b>'
+    ];
+
+
+    var myPanel = Ext.create('Ext.panel.Panel', {
+        width       : 200,
+        height      : 150,
+        title       : 'Ext Panels rock!',
+        collapsible : true,
+        renderTo    : Ext.getBody(),
+        tbar        : myTopToolbar,
+        bbar        : myBottomToolbar,
+        html        : 'My first Toolbar Panel!'
+    });
+
+});
+
+</script> 
+</body>
+</html>

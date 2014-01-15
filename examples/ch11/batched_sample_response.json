@@ -1,0 +1,23 @@
+[
+    {
+        "type":"rpc",
+        "tid":2,
+        "action":"Util",
+        "method":"date",
+        "result":"29\/02\/2012"
+    },
+    {
+        "type":"rpc",
+        "tid":3,
+        "action":"Util",
+        "method":"date",
+        "result":"03:08"
+    },
+    {
+        "type":"rpc",
+        "tid":4,
+        "action":"Util",
+        "method":"date",
+        "result":"1330502887"
+    }
+]

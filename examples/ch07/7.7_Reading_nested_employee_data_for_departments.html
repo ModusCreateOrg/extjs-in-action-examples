@@ -1,0 +1,56 @@
+<html>
+<head>
+
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+    <script type="text/javascript" src="7.4_The_Employee_model_with_validations.js"></script>
+    <script type="text/javascript" src="7.6_The_Department_model_with_associations.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    Ext.onReady(function() {
+
+        var urlRoot = 'http://extjsinaction.com/crud.php?model=Department&method=';
+
+        var departmentStore = Ext.create('Ext.data.Store', {
+            model : 'Department',
+            proxy : {
+                type   : 'jsonp',
+                api    : {
+                    create  : urlRoot + 'CREATE',
+                    read    : urlRoot + 'READ',
+                    update  : urlRoot + 'UPDATE',
+                    destroy : urlRoot + 'DESTROY'
+
+                },
+                reader : {
+                    type            : 'json',
+                    root            : 'data',
+                    idProperty      : 'id',
+                    successProperty : 'meta.success'
+                }
+            }
+        });
+
+        departmentStore.load({
+            params   : {
+                detail : true
+            },
+            callback : function() {
+                departmentStore.each(function(department) {
+                    department.employees().each(function(employee) {
+                        var departmentId   = department.get('id'),
+                            departmentName = department.get('name'),
+                            employeeId     = employee.get('id'),
+                            employeeName   = employee.get('firstName');
+
+                        console.log(departmentId, departmentName, employeeId, employeeName);
+                    });
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

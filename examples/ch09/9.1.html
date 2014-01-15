@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+    <script type='text/javascript'>
+
+        Ext.require(['Ext.data.*', 'Ext.window.Window', 'Ext.tree.*']);
+
+        var store = Ext.create('Ext.data.TreeStore', {
+            root : {
+                text     : 'Root Node',
+                expanded : false,
+                children : [
+                    {
+                        text : 'Child 1',
+                        leaf : true
+                    },
+                    {
+                        text : 'Child 2',
+                        leaf : true
+                    },
+                    {
+                        text     : 'Child 3',
+                        children : [
+                            {
+                                text     : 'Grand Child 1',
+                                children : [
+                                    {
+                                        text : 'Grand... you get the point',
+                                        leaf : true
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        });
+
+        Ext.onReady(function() {
+            Ext.create('Ext.window.Window', {
+                title    : 'Our first tree',
+                layout   : 'fit',
+                autoShow : true,
+                height   : 180,
+                width    : 220,
+                items    : {
+                    xtype       : 'treepanel',
+                    border      : false,
+                    store       : store,
+                    rootVisible : true
+                }
+            });
+        });
+
+    </script>
+
+</head>
+<body></body>
+</html>

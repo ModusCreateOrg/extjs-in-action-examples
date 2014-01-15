@@ -1,0 +1,95 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css" />
+<script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+    Ext.require(['Ext.button.Button', 'Ext.panel.Panel', 'Ext.toolbar.Toolbar', 'Ext.window.MessageBox']);
+
+
+Ext.onReady(function() {
+    var myBtnHandler = function(btn) {
+        Ext.MessageBox.alert('You Clicked', btn.text);
+    };
+
+    var fileBtn =  Ext.create('Ext.button.Button', {
+        text    : 'File',
+        handler : myBtnHandler
+    });
+    var editBtn = Ext.create('Ext.button.Button', {
+        text    : 'Edit',
+        handler : myBtnHandler
+    });
+
+    var tbFill = new Ext.toolbar.Fill();
+
+    var myTopToolbar = Ext.create('Ext.toolbar.Toolbar', {
+        items : [
+            fileBtn,
+            tbFill,
+            editBtn
+        ]
+    });
+
+    var myBottomToolbar = [
+        {
+            text    : 'Save',
+            handler : myBtnHandler
+        },
+        '-',
+        {
+            text    : 'Cancel',
+            handler : myBtnHandler
+        },
+        '->',
+        '<b>Items open: 1</b>'
+    ];
+
+
+    var myPanel = Ext.create('Ext.panel.Panel', {
+        width       : 200,
+        height      : 150,
+        title       : 'Ext Panels rock!',
+        collapsible : true,
+        renderTo    : Ext.getBody(),
+        tbar        : myTopToolbar,
+        bbar        : myBottomToolbar,
+        html        : 'My first Toolbar Panel!',
+        buttons     : [
+            {
+                text    : 'Press me!',
+                handler : myBtnHandler
+            }
+
+        ],
+        tools       : [
+            {
+                type    : 'gear',
+                handler : function(evt, toolEl, panel) {
+
+                    debugger;
+                    var toolClassNames = toolEl.dom.className.split(' ');
+                    var toolClass      = toolClassNames[1];
+                    var toolId         = toolClass.split('-')[2];
+
+                    Ext.MessageBox.alert('You Clicked', 'Tool ' + toolId);
+                }
+            },
+            {
+                type    : 'help',
+                handler : function() {
+                    Ext.MessageBox.alert('You Clicked', 'The help tool');
+                }
+            }
+        ]
+    });
+
+});
+
+</script> 
+</body>
+</html>

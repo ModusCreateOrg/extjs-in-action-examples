@@ -1,0 +1,23 @@
+[
+    {
+        "action":"Util",
+        "method":"date",
+        "data":["d/m/Y"],
+        "type":"rpc",
+        "tid":2
+    },
+    {
+        "action":"Util",
+        "method":"date",
+        "data":["H:i"],
+        "type":"rpc",
+        "tid":3
+    },
+    {
+        "action":"Util",
+        "method":"date",
+        "data":["U"],
+        "type":"rpc",
+        "tid":4
+    }
+]

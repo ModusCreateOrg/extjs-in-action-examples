@@ -1,0 +1,57 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css" />
+<script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+
+Ext.onReady(function() {
+
+    var myWin = Ext.create("Ext.Window", {
+        height       : 200,
+        width        : 400,
+        autoScroll   : true,
+        id           : 'myWin',
+        title        : 'A Window with a Column layout',
+        layout       : 'column',
+        defaults     : {
+            frame : true
+        },
+        items        : [
+            {
+                title       : 'Col 1',
+                id          : 'col1',
+                columnWidth : .3 
+
+            },
+            {
+                title       : 'Col 2',
+                html        : "20% relative width",
+                columnWidth : .2
+
+            },
+            {
+                title       : 'Col 3',
+                html        : "100px fixed width",
+                width : 100 
+            },
+            {
+                title       : 'Col 4',
+                frame       : true,
+                html        : "50% relative width",
+                columnWidth : .5 
+            }
+        ],
+        renderTo: Ext.getBody()
+    });
+
+myWin.show();
+});
+
+</script> 
+</body>
+</html>
