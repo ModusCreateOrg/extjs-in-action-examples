@@ -1,7 +1,0 @@
-{"action":"Actors", "method":"read", "data":[
-    {
-        "page":1,
-        "start":0,
-        "limit":25
-    }
-], "type":"rpc", "tid":1}
