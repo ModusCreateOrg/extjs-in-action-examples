@@ -1,0 +1,75 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.chart.Chart.CHART_URL = '/extjs/resources/charts.swf';
+
+Ext.onReady(function() {
+
+    var proxy = new Ext.data.ScriptTagProxy({
+        url : 'http://extjsinaction.com/getNewHireData.php'
+    });
+    var remoteStore = {
+        xtype    : 'jsonstore',
+        autoLoad : true,
+        storeId  : 'employeeDv',
+        root     : 'records',
+        proxy    : proxy,
+        fields   : [
+            { name : "year",     mapping : "year"     },
+            { name : "total",    mapping : "total"    },
+            { name : "newHires", mapping : "newHires" }
+        ]
+    };
+
+    var tipRenderer = function(chart, record, index, series){
+        var yearInfo = "Year: " + record.get('year');
+        var empInfo  =  series.displayName + ': '+ record.get(series.yField);
+        return yearInfo + '\n' + empInfo ;
+    };
+
+    var extraStyle = {
+        xAxis : {
+            color          : 0x0000FF,
+            majorGridLines : {color: 0x999999,  size  : 1}
+        },
+        yAxis: {
+            titleRotation  : -90
+        }
+    };
+
+    var chart =  {
+        xtype       : 'linechart',
+        store       : remoteStore,
+        xField      : 'year',
+        yField      : 'total',
+        tipRenderer : tipRenderer,
+        extraStyle  : extraStyle,
+        xAxis       : new Ext.chart.CategoryAxis({
+            title : 'Year Hired'
+        }),
+        yAxis : new Ext.chart.NumericAxis({
+            title  : 'Number of employees'
+        })
+    };
+
+    new Ext.Window({
+        width  : 450,
+        height : 250,
+        items  : chart
+    }).show();
+
+});
+
+</script>
+</body>
+</html>
+

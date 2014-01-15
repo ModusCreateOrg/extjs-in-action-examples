@@ -1,0 +1,12 @@
+Ext.define('${appName}.model.${name}', {
+    extend: 'Ext.data.Model',
+    
+    fields: [
+#foreach($field in $fields)
+        {name: '${field.name}', type: '${field.type}'}#if($foreach.count < $fields.size()),
+#{else}
+
+#end
+#end
+    ]
+});

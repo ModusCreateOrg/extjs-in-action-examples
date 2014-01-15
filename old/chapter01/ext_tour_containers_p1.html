@@ -1,0 +1,62 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+<script type="text/javascript">
+
+
+function makeChildren(ownerTitle) {
+	return nestedChildItems =  [
+		{
+			xtype : 'panel',
+			title : 'Child Panel 1',
+			html  : 'Panels can contain Children',
+			frame : true
+		},
+		{
+			xtype : 'panel',
+			title : 'Child Panel 2',
+			frame : true,
+			items : {
+				xtype : 'panel',
+				title : 'Child 1 of "Child Panel 2"',
+				html  : "I'm a grand child of " + ownerTitle,
+				frame : true
+			}
+		}
+	];
+
+}
+Ext.onReady(function() {
+	// Setup a reusable array of child items for our panels and windows
+	
+	
+	new Ext.Panel({
+		renderTo : Ext.getBody(),
+		title    : 'Panel 1',
+		width    : 200,
+		height   : 180,
+		items    : makeChildren('Panel 1')
+	});
+
+	new Ext.Window({
+		title    : 'Window 1',
+		width    : 200,
+		height   : 180,
+		items    : makeChildren('Window 1')
+	}).show();
+
+
+
+
+});
+
+
+</script>
+</head>
+<body>  
+</body>
+</html>

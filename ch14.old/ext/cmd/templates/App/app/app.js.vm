@@ -1,0 +1,13 @@
+//<debug>
+Ext.Loader.setPath({
+    'Ext': '${frameworkPath}/src',
+    '${name}': 'app'
+});
+//</debug>
+
+Ext.application({
+
+    name: '${name}',
+
+    autoCreateViewport: true
+});

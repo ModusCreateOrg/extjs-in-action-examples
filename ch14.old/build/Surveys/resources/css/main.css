@@ -1,0 +1,48 @@
+.surveylist .x-grid-header-ct {
+    display : none;
+}
+
+.group-name {
+    margin    : 0.8em;
+    font-size : 1.2em;
+    padding   : 0.6em;
+}
+
+.group-over {
+    background : #445693;
+    color      : #a3d0f5;
+}
+
+.group-selected {
+    background : #445643;
+    color      : #d8f443;
+}
+
+/* Icons */
+.action-icn {
+    width             : 16px;
+    height            : 16px;
+    background-size   : 16px 16px;
+    background-repeat : no-repeat;
+    margin            : 3px 3px;
+}
+
+.action-icn.questions {
+    background-image : url(../images/questions.png);
+}
+
+.action-icn.chart {
+    background-image : url(../images/chart.png);
+}
+
+.x-grid-row-selected .action-icn.questions {
+    background-image : url(../images/questions-light.png);
+}
+
+.x-grid-row-selected .action-icn.chart {
+    background-image : url(../images/chart-light.png);
+}
+
+.west-bar {
+    min-width: 400px;
+}

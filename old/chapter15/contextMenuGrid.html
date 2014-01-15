@@ -1,0 +1,115 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="../../extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="../../extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="../../extjs/ext-all-debug.js"></script>
+<script type="text/javascript" src="ContextMenuGridPanel.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.onReady(function() {
+
+    Ext.QuickTips.init();
+
+
+//
+//    var recordFields = [
+//        { name : 'id',        mapping : 'id'        },
+//        { name : 'firstname', mapping : 'firstname' },
+//        { name : 'lastname',  mapping : 'lastname'  },
+//        { name : 'street',    mapping : 'street'    },
+//        { name : 'city',      mapping : 'city'      },
+//        { name : 'state',     mapping : 'state'     },
+//        { name : 'zip',       mapping : 'zip'       },
+//        { name : 'country',   mapping : 'country'   }
+//    ];
+
+    var remoteProxy = new Ext.data.ScriptTagProxy({
+       url : 'http://extjsinaction.com/dataQuery.php'
+    });
+
+    var recordFields = ['firstname','lastname'];
+
+    var remoteJsonStore = new Ext.data.JsonStore({
+        proxy         : remoteProxy,
+        id            : 'ourRemoteStore',
+        root          : 'records',
+        autoLoad      : true,
+        totalProperty : 'totalCount',
+        remoteSort    : true,
+        fields        : recordFields
+    });
+
+
+    var columnModel = [
+        {
+            header    : 'Last Name',
+            dataIndex : 'lastname'
+        },
+        {
+            header    : 'First Name',
+            dataIndex : 'firstname'
+        }
+    ];
+
+    var onMenuItemClick = function(menuItem) {
+       var ctxMenuGrid = Ext.getCmp('ctxMenuGrid');
+       var selRecord = ctxMenuGrid.getSelectedRecord();
+       var msg = String.format(
+            '{0} : {1}, {2}',
+            menuItem.text,
+            selRecord.get('lastname'),
+            selRecord.get('firstname')
+        );
+
+       Ext.MessageBox.alert('Feedback', msg);
+    };
+
+
+    var grid = {
+        xtype      : 'contextMenuGridPanel',
+        columns    : columnModel,
+        store      : remoteJsonStore,
+        loadMask   : true,
+        id         : 'ctxMenuGrid',
+        selModel   : new Ext.grid.CellSelectionModel(),
+        viewConfig : { forceFit : true },
+        menu       : [
+            {
+               text    : 'Add Record',
+               handler : onMenuItemClick
+            },
+            {
+               text    : 'Update Record',
+               handler : onMenuItemClick
+            },
+            {
+               text    : 'Delete Record',
+               handler : onMenuItemClick
+            }
+        ]
+    };
+
+
+    new Ext.Window({
+        height : 200,
+        width  : 300,
+        border : false,
+        layout : 'fit',
+        items  : grid,
+        center : true
+    }).show();
+
+
+});
+
+    
+
+
+</script>
+</body>
+</html>
+

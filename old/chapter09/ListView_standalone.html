@@ -1,0 +1,61 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+
+</head>
+<body>
+
+<script type="text/javascript">
+Ext.onReady(function() {
+    var proxy = new Ext.data.ScriptTagProxy({
+        url : "http://extjsinaction.com/getDepartments.php"
+    });
+    var departmentDvStore = {
+        
+        xtype    : 'jsonstore',
+        autoLoad : true,
+        proxy    : proxy,
+        root     : 'records',
+        storeId  : 'departmentDv',
+        fields   : [
+            { name : "department",   mapping : "department" },
+            { name : "numEmployees", mapping : "numEmployees" }
+        ]
+    };
+
+    var departmentDv = new Ext.ListView({
+        store         : departmentDvStore,
+        singleSelect  : true,
+        style         : 'background-color: #FFFFFF;',
+        columns       : [
+            {
+                header    : 'Department Name',
+                dataIndex : 'department'
+            },
+            {
+                header    : '# Emp,',
+                dataIndex : 'numEmployees',
+                width     : .25
+            }
+        ]
+    });
+
+   new Ext.Window({
+       layout   : 'fit',
+       height   : 300,
+       width    : 225,
+       items    : departmentDv
+   }).show();
+
+
+
+});
+
+</script>
+</body>
+</html>
+

@@ -1,0 +1,55 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+
+</head>
+<body>
+<script type="text/javascript">
+Ext.onReady(function() {
+    var console = window.console;
+
+    /**
+     * This example demonstrates how to instantiate a new instance of Observable and setup custom events, fire them
+     * and setup listeners.
+     */
+
+    var myComponent = new Ext.util.Observable();
+
+    myComponent.addEvents('sayHello');
+    myComponent.addEvents('sayGoodbye');
+
+    myComponent.addEvents('sayhello', 'saygoodbye');
+
+    myComponent.addEvents({
+     'sayHello'   : true,
+     'sayGoodbye' : true
+    });
+
+
+    myComponent.on('sayHello', function() {
+        console.log('Hello stranger');
+    });
+
+
+    myComponent.fireEvent('sayHello');
+
+
+    var sayGoodbyeFn = function(firstName, lastName) {
+        console.log('Goodbye ' + firstName + ' ' + lastName + '!');
+    };
+    myComponent.on('sayGoodbye', sayGoodbyeFn);
+
+    myComponent.fireEvent('sayGoodbye', 'John', 'Smith');
+
+
+    myComponent.removeListener('sayGoodbye', sayGoodbyeFn);
+    myComponent.un('sayGoodbye', sayGoodbyeFn);
+});
+</script>
+
+</body>
+</html>

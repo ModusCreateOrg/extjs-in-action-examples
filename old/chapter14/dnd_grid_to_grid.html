@@ -1,0 +1,202 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+
+</head>
+<body>
+<style type="text/css">
+    .gridBodyNotifyOver {
+        border-color: #00cc33 !important;
+    }
+    .gridRowInsertBottomLine {
+        border-bottom:1px dashed #00cc33;
+    }
+    .gridRowInsertTopLine {
+        border-top:1px dashed #00cc33;
+    }
+</style>
+ 
+<script type="text/javascript">
+Ext.onReady(function() {
+    var remoteProxy = new Ext.data.ScriptTagProxy({
+//        url : 'http://extjsinaction.com/examples/chapter12/getPCStats.php'
+        url : 'getPCStats.php'
+    });
+
+    var remoteJsonStore = {
+        xtype         : 'jsonstore',
+        proxy         : remoteProxy,
+        id            : 'ourRemoteStore',
+        root          : '',
+        autoLoad      : true,
+        totalProperty : 'totalCount',
+        fields        : [
+            { name : 'department',    mapping : 'department' },
+            { name : 'workstationCount',  mapping : 'workstationCount' }
+        ]
+    };
+
+    var depsComputersOK = new Ext.grid.GridPanel({
+        title          : 'Departments with good computers',
+        store          : remoteJsonStore,
+        loadMask       : true,
+        stripeRows     : true,
+        enableDragDrop : true,
+        ddGroup        : 'depGridDD',
+        autoExpandColumn : 'department',
+        columns          : [
+            {
+                header    : 'Department Name',
+                dataIndex : 'department',
+                id        : 'department'
+            },
+            {
+                header    : '# PCs',
+                dataIndex : 'workstationCount',
+                width     : 40
+            }
+        ]
+    });
+
+    var needUpgradeStore = Ext.apply({}, {
+        proxy     : null,
+        autoLoad : false
+    }, remoteJsonStore);
+
+    var needUpgradeGrid = new Ext.grid.GridPanel({
+        title            : 'Departments that need upgrades',
+        store            : needUpgradeStore,
+        loadMask         : true,
+        stripeRows       : true,
+        enableDragDrop   : true,
+        ddGroup          : 'depGridDD',
+        autoExpandColumn : 'department',
+        columns          : [
+            {
+                header    : 'Department Name',
+                dataIndex : 'department',
+                id        : 'department'
+            },
+            {
+                header    : '# PCs',
+                dataIndex : 'workstationCount',
+                width     : 40
+            }
+        ]
+    });
+
+    new Ext.Window({
+        width    : 500,
+        height   : 300,
+        layout   : 'hbox',
+        border   : false,
+        defaults :  {
+            frame : true,
+            flex  : 1
+        },
+        layoutConfig : {
+            align : 'stretch'
+        },
+        items        : [
+            depsComputersOK,
+            needUpgradeGrid
+        ]
+    }).show();
+    
+
+    var dropZoneOverrides = {
+        ddGroup           : 'depGridDD',
+        onContainerOver : function(ddSrc, evtObj, ddData) {
+            var destGrid  = this.grid;
+            var tgtEl    = evtObj.getTarget();
+            var tgtIndex = destGrid.getView().findRowIndex(tgtEl);
+            this.clearDDStyles();
+
+            // is this a row?
+            if (typeof tgtIndex === 'number') {
+                var tgtRow       = destGrid.getView().getRow(tgtIndex);
+                var tgtRowEl     = Ext.get(tgtRow);
+                var tgtRowHeight = tgtRowEl.getHeight();
+                var tgtRowTop    = tgtRowEl.getY();
+                var tgtRowCtr    = tgtRowTop + Math.floor(tgtRowHeight / 2);
+                var mouseY       = evtObj.getXY()[1];
+
+                // below
+                if (mouseY >= tgtRowCtr) {
+                    this.point = 'below';
+                    tgtIndex ++;
+                    tgtRowEl.addClass('gridRowInsertBottomLine');
+                    tgtRowEl.removeClass('gridRowInsertTopLine');
+                }
+                // above
+                else if (mouseY < tgtRowCtr) {
+                    this.point = 'above';
+                    tgtRowEl.addClass('gridRowInsertTopLine');
+                    tgtRowEl.removeClass('gridRowInsertBottomLine')
+                }
+                this.overRow = tgtRowEl;
+            }
+            else {
+                tgtIndex = destGrid.store.getCount();
+            }
+            this.tgtIndex = tgtIndex;
+
+            destGrid.body.addClass('gridBodyNotifyOver');
+
+            return this.dropAllowed;
+        },
+        notifyOut : function() {
+            this.clearDDStyles();
+        },
+        clearDDStyles : function() {
+            this.grid.body.removeClass('gridBodyNotifyOver');
+            if (this.overRow) {
+                this.overRow.removeClass('gridRowInsertBottomLine');
+                this.overRow.removeClass('gridRowInsertTopLine');
+            }
+        },
+        onContainerDrop : function(ddSrc, evtObj, ddData){
+            var grid        = this.grid;
+            var srcGrid     = ddSrc.view.grid;
+            var destStore   = grid.store;
+            var tgtIndex = this.tgtIndex;
+            var records     = ddSrc.dragData.selections;
+
+            this.clearDDStyles();
+
+            var srcGridStore = srcGrid.store;
+            Ext.each(records, srcGridStore.remove, srcGridStore);
+
+            if (tgtIndex > destStore.getCount()) {
+                tgtIndex = destStore.getCount();
+            }
+            destStore.insert(tgtIndex, records);
+
+            return true;
+        }
+    };
+    // This will make sure we only drop to the view container
+    var leftGridDroptgtCfg = Ext.apply({}, dropZoneOverrides, {
+        grid : depsComputersOK
+    });
+    new Ext.dd.DropZone(depsComputersOK.el, leftGridDroptgtCfg);
+    
+
+    // This will make sure we only drop to the view container
+    var needdUpgradesDZConfig = Ext.apply({}, dropZoneOverrides, {
+        grid : needUpgradeGrid
+    });
+    new Ext.dd.DropZone(needUpgradeGrid.el, needdUpgradesDZConfig);
+
+
+
+
+});
+
+</script>
+</body>
+</html>

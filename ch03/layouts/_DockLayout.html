@@ -1,0 +1,58 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="/js/ext4/resources/css/ext-all.css" />
+
+<script type="text/javascript" src="/js/ext4/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+
+Ext.onReady(function() {
+    var topToolbar = {
+        xtype  : 'toolbar',
+        dock   : 'top',
+        height : 50,
+        weight : 200,
+        items  :  [
+          '111111111111111'
+       ]
+    };
+    var topToolbar2 = {
+        xtype  : 'toolbar',
+        dock   : 'top',
+        height : 50,
+        weight : 100,
+        items  :  [
+          '222222222222'
+       ]
+    };
+    var leftToolbar = {
+        xtype  : 'toolbar',
+        dock   : 'left',
+        height : 50,
+        weight : 1,
+        items  :  [
+          'xxxxxxxxxxxx'
+       ]
+    };
+
+    Ext.create('Ext.Panel', {
+        renderTo    : Ext.getBody(),
+        height      : 300,
+        width       : 300,
+        html        : 'Panel body here',
+        dockedItems : [
+            topToolbar,
+            topToolbar2,
+            leftToolbar
+        ]
+    }).show();
+
+});
+
+</script>
+</body>
+</html>

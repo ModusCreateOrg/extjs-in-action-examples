@@ -1,0 +1,100 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+Ext.BLANK_IMAGE_URL = '/extjs/resources/images/default/s.gif';
+
+Ext.onReady(function() {
+    var simpleTab = {
+        title : 'My first tab',
+        html  : 'This is my first tab!'
+    };
+
+    var closableTab = {
+        title    : 'I am closable',
+        html     : 'Please close when done reading.',
+        closable : true
+    };
+
+    var disabledTab = {
+        title    : 'Disabled tab',
+        id       : 'disabledTab',
+        html     : 'Peekaboo!',
+        disabled : true,
+        closable : true
+    };
+
+    var tabPanel = new Ext.TabPanel({
+        activeTab         : 0,
+        id                : 'myTPanel',
+        //layoutOnTabChange : true,
+        enableTabScroll   : true,
+        items             : [
+            simpleTab,
+            closableTab,
+            disabledTab
+        ]
+    });
+
+    new Ext.Window({
+        height : 300,
+        width  : 400,
+        layout : 'fit',
+        items  : tabPanel
+    }).show();
+
+    Ext.getCmp('myTPanel').unhideTabStripItem('disabledTab');
+
+    var embeddedTabPanel = {
+        title     : 'My second tab',
+        closable  : true,
+        xtype     : 'tabpanel',
+        activeTab : 0,
+        items     : [
+            {
+                title : 'Inner tab 1'
+            },
+            {
+                title : 'Inner tab 2'
+            }
+        ]
+    };
+
+    var complexTab = {
+        title    : 'A Complex tab',
+        layout   : 'border',
+        defaults : {
+            frame : true,
+            split : true
+        },
+        items  : [
+            {
+                html   : 'Center Panel',
+                region : 'center'
+            },
+            {
+                html   : 'North Panel',
+                region : 'north',
+                height : 25
+            },
+            {
+                html   : 'West Panel',
+                region : 'west',
+                height : 25
+            }
+        ]
+    }
+
+
+});
+
+</script> 
+</body>
+</html>

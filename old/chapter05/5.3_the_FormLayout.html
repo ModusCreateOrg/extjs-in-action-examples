@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+Ext.BLANK_IMAGE_URL = '/extjs/resources/images/default/s.gif';
+
+Ext.onReady(function() {
+
+    var myWin =  new Ext.Window({
+        height      : 240,
+        width       : 230,
+        bodyStyle   : 'padding: 5px',
+        layout      : 'form',
+        labelWidth  : 50,
+        defaultType : 'textfield',
+        items       : [
+            {
+                fieldLabel : 'Name',
+                width      : 110
+            },
+            {
+                fieldLabel : 'Age',
+                width      : 25
+            },
+            {
+                xtype      : 'combo',
+                fieldLabel : 'Location',
+                width      : 120,
+                store      : [ 'Here', 'There', 'Anywhere' ]
+            },
+            {
+                xtype      : 'textarea',
+                fieldLabel : 'Bio'
+            },
+            {
+                xtype          : 'panel',
+                fieldLabel     : ' ',
+                labelSeparator : '',
+                frame          : true,
+                title          : 'Instructions',
+                html           : 'Please fill in the form',
+                height         : 55
+            }
+        ]
+    });
+
+    myWin.show();
+
+});
+
+</script> 
+</body>
+</html>

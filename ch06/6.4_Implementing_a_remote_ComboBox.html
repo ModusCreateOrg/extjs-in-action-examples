@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+    <link rel="stylesheet" type="text/css" href="../../ext4/resources/css/ext-all.css"/>
+    <script type="text/javascript" src="../../ext4/ext-all-debug.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+    Ext.onReady(function() {
+        Ext.QuickTips.init();
+        var remoteJsonStore = Ext.create(Ext.data.Store, {
+            root          : 'records',
+            totalProperty : 'totalCount',
+            baseParams    : {
+                column : 'fullName'
+            },
+            fields     : [
+                'fullName',
+                'id'
+            ],
+            proxy : {
+                type: 'jsonp',
+                url : 'http://extjsinaction.com/dataQuery.php'
+            }
+        });
+
+        var combo = {
+            xtype          : 'combo',
+            fieldLabel     : 'Search by name',
+            forceSelection : true,
+            displayField   : 'name',
+            loadingText    : 'Querying....',
+            minChars       : 1,
+            store          : remoteJsonStore
+        };
+
+        new Ext.Window({
+            title      : '',
+            height     : 100,
+            labelWidth : 100,
+            bodyStyle  : 'padding: 5px',
+            items      : combo
+        }).show();
+
+    });
+
+
+</script>
+</body>
+</html>

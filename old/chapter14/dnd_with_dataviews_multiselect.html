@@ -1,0 +1,264 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+
+</head>
+<body>
+
+<style type="text/css">
+    .emplWrap {
+        border: 1px #999999 solid;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px; 
+        margin : 3px;
+        padding : 3px;
+        background-color: #ffffcc;
+    }
+
+    .emplSelected {
+        border: 1px #66ff66 solid;
+        background-color: #ccffcc;
+        cursor: pointer;
+    }
+
+    .emplOver {
+        border: 1px #9999ff solid;
+        background-color: #ccccff;
+        cursor: pointer;
+    }
+
+    .emplName {
+        font-weight: bold;
+        margin-left: 5px;
+        font-size: 14px;
+        text-decoration: underline;
+        color: #333333;
+    }
+
+    .emplAddress {
+        margin-left: 20px;
+    }
+    .title {
+        margin-left: 5px;
+        font-weight: bold;
+    }
+
+</style>
+
+<script type="text/javascript">
+Ext.onReady(function() {
+    /**
+     * configure the data views
+     */
+    var storeFields =  [
+        { name : "id",         mapping : "id" },
+        { name : "department", mapping : "department" },
+        { name : "email",      mapping : "email" },
+        { name : "firstname",  mapping : "firstname" },
+        { name : "lastname",   mapping : "lastname" }
+    ];
+    var url = 'http://extjsinaction.com/getEmployees.php';
+
+    var onStaffStore = {
+        xtype    : 'jsonstore',
+        autoLoad : true,
+        proxy    : new Ext.data.ScriptTagProxy({
+            url : url
+        }),
+        fields   : storeFields,
+        sortInfo : {
+            field     : 'lastname',
+            direction : 'ASC'
+        }
+    };
+
+
+    var onVactaionStore = {
+        xtype    : 'jsonstore',
+        fields   : storeFields,
+        autoLoad : false,
+        sortInfo : {
+            field     : 'lastname',
+            direction : 'ASC'
+        }
+    };
+
+
+
+    var dvTpl = new Ext.XTemplate(
+        '<tpl for=".">',
+            '<div class="emplWrap" id="employee_{id}">',
+                '<div class="emplName">{lastname}, {firstname}</div>',
+                '<div><span class="title">Department:</span> {department}</div>',
+                '<div>',
+                    '<span class="title">Email:</span><a href="#">{email}</a>',
+                '</div>',
+            '</div>',
+        '</tpl>'
+    );
+
+    var onStaffDV = new Ext.DataView({
+        tpl           : dvTpl,
+        store         : onStaffStore,
+        loadingText   : 'loading..',
+        multiSelect   : true,
+        overClass     : 'emplOver',
+        selectedClass : 'emplSelected',
+        itemSelector  : 'div.emplWrap',
+        emptyText     : 'No employees on staff.',
+        style         : 'overflow:auto; background-color: #FFFFFF;'
+    });
+
+    var onVactionDV = new Ext.DataView({
+        tpl           : dvTpl,
+        store         : onVactaionStore,
+        loadingText   : 'loading..',
+        multiSelect   : true,
+        overClass     : 'emplOver',
+        selectedClass : 'emplSelected',
+        itemSelector  : 'div.emplWrap',
+        emptyText     : 'No employees on vacation',
+        style         : 'overflow:auto; background-color: #FFFFFF;'
+    });
+
+    new Ext.Window({
+        layout       : 'hbox',
+        height       : 400,
+        width        : 550,
+        border       : false,
+        layoutConfig : {
+            align : 'stretch'
+        },
+        items         :  [
+
+            {
+                title  : 'Employees on staff',
+                frame  : true,
+                layout : 'fit',
+                items  : onStaffDV,
+                flex   : 1
+            },
+            {
+                title  : 'Employees on vacation',
+                frame  : true,
+                layout : 'fit',
+                id     : "test",
+                items  : onVactionDV,
+                flex   : 1
+            }
+        ]
+    }).show();
+
+    /**
+    * Drag zone overrides
+    */
+    var dragZoneOverrides = {
+        containerScroll : true,
+        scroll          : false,
+        getDragData     : function(evtObj){
+            var dataView = this.dataView;
+            var sourceEl = evtObj.getTarget(dataView.itemSelector, 10);
+
+            if (sourceEl) {
+                var selectedNodes = dataView.getSelectedNodes();
+                var dragDropEl = document.createElement('div');
+
+                if (selectedNodes.length < 1) {
+                    selectedNodes.push(sourceEl);
+                }
+
+                Ext.each(selectedNodes, function(node) {
+                    dragDropEl.appendChild(node.cloneNode(true));
+                });
+                return {
+                    ddel           : dragDropEl,
+                    repairXY       : Ext.fly(sourceEl).getXY(),
+                    dragRecords    : dataView.getSelectedRecords(),
+                    sourceDataView : dataView
+                };
+            }
+
+        },
+        getRepairXY: function() {
+            return this.dragData.repairXY;
+        }
+    };
+
+
+    var onStaffDragZoneCfg = Ext.apply({}, {
+        ddGroup     : 'employeeDD',
+        dataView    : onStaffDV
+    }, dragZoneOverrides);
+
+    new Ext.dd.DragZone(onStaffDV.getEl(), onStaffDragZoneCfg);
+
+    var vacationDragZoneCfg = Ext.apply({}, {
+        ddGroup     : 'employeeDD',
+        dataView    : onVactionDV
+    }, dragZoneOverrides);
+
+    new Ext.dd.DragZone(onVactionDV.getEl(), vacationDragZoneCfg);
+
+
+        /***
+         * Drop zone dcode
+         */
+    var dropZoneOverrides = {
+        onContainerOver : function() {
+          return this.dropAllowed;
+        },
+        onContainerDrop : function(dropZone, evtObj, dragData) {
+
+            var dragRecords = dragData.dragRecords;
+            var store = this.dataView.store;
+
+            var dupFound = false;
+
+            Ext.each(dragRecords, function(record) {
+
+                var found = store.findBy(function(r) {
+                   return r.data.id === record.data.id;
+                });
+
+                if (found > -1 ) {
+                    dupFound = true;
+                }
+            });
+
+            if (dupFound !== true) {
+                Ext.each(dragRecords, function(record) {
+                    dragData.sourceDataView.store.remove(record);
+                });
+                this.dataView.store.add(dragRecords);
+                this.dataView.store.sort('lastname', 'ASC');
+            }
+
+            return true;
+        }
+    };
+
+    var onStaffDropZoneCfg = Ext.apply({}, {
+        ddGroup          : 'employeeDD',
+        dataView         : onStaffDV
+    }, dropZoneOverrides);
+
+    var onStaffDVDropZone = new Ext.dd.DropZone(onStaffDV.ownerCt.el, onStaffDropZoneCfg);
+
+    var onVacationDropZoneCfg = Ext.apply({}, {
+        ddGroup          : 'employeeDD',
+        dataView         : onVactionDV
+    }, dropZoneOverrides);
+
+    var vacationDvDropZone = new Ext.dd.DropZone(onVactionDV.ownerCt.el,  onVacationDropZoneCfg);
+    //
+
+});
+
+</script>
+</body>
+</html>
+

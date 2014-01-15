@@ -1,0 +1,45 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+
+<script type="text/javascript">
+
+Ext.onReady(function() {
+    /**
+     * This example demonstrates how to implement a relatively simple template using two different anonymous data
+     * objects.
+     */
+    var myTpl = new Ext.Template(                                            // 1
+        '<div style="background-color: {color}; margin: 10px;">',
+            '<b> Name :</b> {name}<br />',
+            '<b> Age :</b> {age}<br />',
+            '<b> DOB :</b> {dob}<br />',
+        '</div>'
+    );
+
+    myTpl.compile();                                                         // 2
+
+    myTpl.append(document.body,{                                             // 3
+        color : "#E9E9FF",
+        name  : 'John Smith',
+        age   : 20,
+        dob   : '10/20/89'
+    });
+
+    myTpl.append(document.body,{
+        color : "#FFE9E9",
+        name  : 'Naomi White',
+        age   : 25,
+        dob   : '03/17/84'
+    });
+
+});
+</script></head>
+<body>
+
+</body>
+</html>

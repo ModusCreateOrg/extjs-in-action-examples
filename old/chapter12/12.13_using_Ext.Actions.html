@@ -1,0 +1,71 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+    <script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+    <script type="text/javascript" src="TDGi.iconMgr/TDGi.iconMgr.js"></script>
+<link rel="stylesheet" type="text/css" href="icons.css" />
+<style type="text/css">
+.icon-accept {
+    background-image: url(icons/accept.png) !important;
+}
+
+
+</style>
+</head>
+<body style="padding: 20px;">
+
+<script type="text/javascript">
+Ext.onReady(function() {
+Ext.QuickTips.init();
+var genericHandler = function(menuItem) {
+    Ext.MessageBox.alert('', 'Your choice is ' + menuItem.text);
+}
+
+var pasteAction = new Ext.Action({
+    text    : 'Paste',
+    iconCls : 'icon-paste_plain',
+    handler : genericHandler
+});
+
+var cutAction = new Ext.Action({
+    text    : 'Cut',
+    iconCls : 'icon-cut',
+    handler : genericHandler
+});
+
+var copyAction = new Ext.Action({
+    text    : 'Copy',
+    iconCls : 'icon-page_white_copy',
+    handler : genericHandler
+});
+
+
+var editMenuBtn = {
+    text : 'Edit',
+    menu : [
+        cutAction,
+        copyAction,
+        pasteAction
+    ]
+}
+
+new Ext.Window({
+    width        : 300,
+    height       : 200,
+    tbar         : [
+        editMenuBtn,
+        '->',
+        cutAction,
+        copyAction,
+        pasteAction
+    ]
+}).show();
+
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<link rel="stylesheet" type="text/css" href="/extjs/resources/css/ext-all.css" />
+<script type="text/javascript" src="/extjs/adapter/ext/ext-base.js"></script>
+<script type="text/javascript" src="/extjs/ext-all-debug.js"></script>
+</head> 
+<body> 
+
+<script type="text/javascript">
+Ext.onReady(function() {
+Ext.QuickTips.init();
+
+var checkboxes = {
+	xtype      : 'checkboxgroup',
+	fieldLabel : "Which do you own",
+	anchor     : '100%',
+	defaults : {
+		bodyStyle  :   'background-color: #DFE8F6;'
+	},
+	columns    : 2,
+	items      : [
+		{
+			boxLabel   : 'Cat',
+			inputValue : 'cat'
+		},
+		{
+			boxLabel   : 'Dog',
+			inputValue : 'dog'
+		},
+		{
+			boxLabel   : 'Fish',
+			inputValue : 'fish'
+		},
+		{
+			boxLabel   : 'Bird',
+			inputValue : 'bird'
+		}
+	]
+};
+
+var fp = {
+	xtype      : 'form',
+	labelWidth : 110,
+	items      : checkboxes,
+	frame      : true
+};
+		
+new Ext.Window({
+	title   : '',
+	layout  : 'fit',
+	height  : 90,
+	width   : 320,
+	borde   : false,
+	items   : fp
+}).show();
+
+});
+
+
+
+</script> 
+</body>
+</html>
