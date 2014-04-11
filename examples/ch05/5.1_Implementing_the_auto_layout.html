@@ -22,11 +22,12 @@ Ext.onReady(function() {
 
     var childPnl2 = {
        xtype  : 'panel',
+        width : 150,
        html   : 'Second child',
        title  : 'Second children have all the fun!'
     };
 
-    var myWin = Ext.create("Ext.Window", ({
+    var myWin = Ext.create("Ext.Window", {
        height     : 300,
        width      : 300,
        title      : 'A window with a container layout',
@@ -53,7 +54,7 @@ Ext.onReady(function() {
              }
           }
        ]
-    }));
+    });
 
     myWin.show();
 
