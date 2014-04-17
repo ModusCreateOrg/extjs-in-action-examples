@@ -6,7 +6,7 @@ Installing the software
 
 On ubuntu linux you can install the required files like this as root:
 
-apt-get install php5-mysql php5-json
+apt-get install php5-mysqlnd php5-json
 
 On Mac osx you can use homebrew (further instructions at http://brew.sh )
 
