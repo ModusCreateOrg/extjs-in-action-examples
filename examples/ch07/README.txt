@@ -40,7 +40,7 @@ mysql_connect("localhost", "extjsinaction", "extjsinaction") or die ("could not 
 Tweaking the datastores to run locally
 --------------------------------------
 
-In 7.5_The_Employee_Store.html you can tweak urlRoot to match your local crud.php installation.  Just remove "http://extjsinaction.com/" from urlRoot and you should pickup you local file. Remember to alter the proxy type from "jsonp" to "ajax" now that you are running locally. Now you should be able to experiment with datastores from your console in your browser.
+In 7.4_The_Employee_Store.html you can tweak urlRoot to match your local crud.php installation.  Just remove "http://extjsinaction.com/" from urlRoot and you should pickup you local file. Remember to alter the proxy type from "jsonp" to "ajax" now that you are running locally. Now you should be able to experiment with datastores from your console in your browser.
 
 
 
